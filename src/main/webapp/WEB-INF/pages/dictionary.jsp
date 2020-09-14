@@ -6,6 +6,7 @@
 <html lang="en">
 <head>
 	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script src="/resources/js/myfunctions/dictionaryFuncBeforeLoad.js"></script>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Dictionary</title>
@@ -51,14 +52,18 @@
 						  <th class="speechp-cell">Speech Part</th>
 						  <th>Category</th>
 						 </tr>
-						  
+  
 						<c:if test="${words ne null}">
 							<c:forEach var="word" items="${words}">
-							 <tr>
-							  <td><a href="/word/${word.wordEng}">${word.wordEng}</a></td>
+							 <tr id="tr${word.id}" onmouseover="tableButtonShow('div${word.id}')" onmouseout="tableButtonHide('div${word.id}')">
+							  <td>
+								<div class="edit-button" id="div${word.id}" style="display:none"><button type="button" class="btn btn-default" onclick="deleteWord('${word.id}')" onfocus="btnDelFocus('fa-trash-o${word.id}')" onmouseout="btnDelBlur('fa-trash-o${word.id}')" onmouseover="btnDelFocus('fa-trash-o${word.id}')" onblur="btnDelBlur('fa-trash-o${word.id}')">
+									<i class="fa fa-trash-o" id="fa-trash-o${word.id}"></i></button>
+								</div>
+								<a href="/word/${word.wordEng}">${word.wordEng}</a></td>
 							  <td>${word.wordUkr}</td>
 							  <td>${word.speechPart}</td>
-							  <td>${word.category}</td>
+							  <td>${word.category.name}</td>
 							 </tr>
 							</c:forEach> 
 						</c:if>	

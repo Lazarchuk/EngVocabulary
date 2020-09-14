@@ -1,0 +1,1 @@
+<div class="delete-syn-ant"><button type="button" class="btn btn-default" onclick="deleteSynonym()" onfocus="btnSubmitFocus(\'i_syn1\')" onmouseout="btnSubmitBlur(\'i_syn1\')" onmouseover="btnSubmitFocus(\'i_syn1\')" onblur="btnSubmitBlur(\'i_syn1\')"><i class="fa fa-minus" id="i_syn1"></i></button></div>

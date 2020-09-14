@@ -1,21 +1,30 @@
 package voc.dao;
 
-import voc.model.Word;
+import voc.model.*;
 
 import java.util.List;
 
-public interface Dao<T> {
+public interface Dao {
     int getWordsQuantity();
-    int findWordInDB(String requestWord);   // If such word is exist in DB, return it id, else - return 0
-    List<T> getAll();
-    List<String> getAllCategories();
+    List<Word> getAll();
+    List<Synonym> getAllSynonyms();
+    List<Antonym> getAllAntonyms();
+    List<Category> getAllCategories();
     List<String> getErrors();
     Word getWord(String requestWord);
-    int insertWord(Word word);
-    int editWord(Word word);
+    Synonym getSynonym(String requestSynonym);
+    Antonym getAntonym(String requestAntonym);
+    Category getCategory(int id);
+    int getWordId(String requestWord);       // If such word is exist in DB, return it id, else - return 0
+    int getSynonymId(String requestSynonym);       // If such word is exist in DB, return it id, else - return 0
+    int getAntonymId(String requestAntonym);       // If such word is exist in DB, return it id, else - return 0
+    void insertWord(Word word);
+    void editWord(Word word);
+    void deleteWord(int id);
+    void mergeWord(Word word);
     boolean addSynonym(String targetWord, String synonym);
     boolean addAntonym(String targetWord, String antonym);
     boolean deleteSynonym(String targetWord, String synonym);
     boolean deleteAntonym(String targetWord, String antonym);
-    boolean addCategory(String targetWord, String category);
+    void addCategory(Category category);
 }

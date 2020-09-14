@@ -2,12 +2,12 @@
 	var isOriginalTable = true;
 	
 	/* Buttons in DictionaryController*/
-	function btnSearchFocus(){
+	/*function btnSearchFocus(){
 		document.getElementById("i_search").style.color = '#E90350';
 	}
 	function btnSearchBlur(){
 		document.getElementById("i_search").style.color = '#FFFFFF';
-	}
+	}*/
 	function btnUpdateFocus(){
 		document.getElementById("i_update").style.color = '#E90350';
 	}
@@ -15,10 +15,28 @@
 		document.getElementById("i_update").style.color = '#FFFFFF';
 	}
 	
+	/* Buttons in WordController*/
+	function btnDelFocus(id){
+		document.getElementById(id).style.color = '#E90350';
+	}
+	function btnDelBlur(id){
+		document.getElementById(id).style.color = '#FFFFFF';
+	}
+
+	/*Table tr onmouseover, onmouseout*/
+	function tableButtonShow(divId){
+		document.getElementById(divId).style.display = 'block';
+	}
+	function tableButtonHide(divId){
+		document.getElementById(divId).style.display = 'none';
+	}
+	
+	
 	/*Save all body in variable*/
 	var original_table = document.getElementById("tab").innerHTML;
 	
 	
+	/*OLD*/
 	/*Search words onclick button*/
 	/*function searchButton(){
 		document.getElementById("searchbutton").blur();
@@ -89,13 +107,20 @@
 								var wordEng = result[i].wordEng;
 								var wordUkr = result[i].wordUkr;
 								var part = result[i].speechPart;
-								var category = result[i].category;
+								var category = '';
+								if (result[i].category != null){
+									category = result[i].category.name;
+								}
+								/*var category = result[i].category*/
 								var item = '<td><a href="/word/'+wordEng+'">'+wordEng+'</a></td><td>'+wordUkr+'</td><td>'+part+'</td><td>'+category+'</td>';
 								var tr = document.createElement("tr");
 								tr.innerHTML = item;
 								document.getElementsByTagName('tbody')[0].appendChild(tr);
 							}
 						}
+					},
+					error: function(){
+						console.log('Error');
 					}
 				});
 			},
@@ -113,6 +138,24 @@
 			isOriginalTable = true;
 		}
 	}
+	
+	/*Delete word by id in dictionary view*/
+	function deleteWord(wordIdToDelete){
+		$.ajax({
+			type: "POST",
+			url: "/delete/word",
+			data:{wordId: wordIdToDelete},
+			success: function(result){
+				console.log('Delete success');
+				document.getElementById('tr'+wordIdToDelete).remove();
+			},
+			error: function(){
+				console.log('Delete feilure');
+			}
+			
+		});
+	}
+	
 	
 	window.onclick = function(event) {
 		document.getElementById("searchtext").value = "";

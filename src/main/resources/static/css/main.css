@@ -45,8 +45,9 @@ table a{
 }
 table a:hover{
 	color: #E90350;
-	font-size: 15px;
+	/*font-size: 15px;*/
 }
+
 th:first-child, td:first-child {
 text-align: left;
 }
@@ -58,7 +59,7 @@ border-top-right-radius: 10px;
 border-right: none;
 }
 td {
-padding: 5px 20px;
+padding: 5px 10px 5px 20px;
 /*background: #F8E391;*/
 }
 tr:last-child td:first-child {
@@ -1109,7 +1110,7 @@ h2.title {
 
 
 .edit-button{
-	width: 40px;
+	width: 30px;
 	float: right;
 }
 
@@ -1133,6 +1134,35 @@ h2.title {
 }
 
 .synonyms-box input {
+  display: none;
+}
+
+.synonyms-box label {
+  color: #E90350;
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.synonyms-box button{
+	background: #E90350;
+	border: medium none;
+	border-radius: 6px;
+	margin-left: 30px;
+	padding: 6px 10px;
+	height: 30px;
+	width: 30px;
+}
+
+.synonyms-box button i{
+	color: #FFFFFF;
+}
+
+.synonyms-box  button:hover, 
+.synonyms-box  button:focus{
+	background-color:#EAE3E4;
+}
+
+.add-syn-ant input {
   background: #EAE3E4;
   border: medium none;
   color: #E90350;
@@ -1146,9 +1176,11 @@ h2.title {
   background-image: url(../images/home/searchicon.png);
   background-repeat: no-repeat;
   background-position: 154px;
+  display: block;
+  float: left;
 }
 
-.synonyms-box button{
+.add-syn-ant button{
 	background: #E90350;
 	border: medium none;
 	border-radius: 6px;
@@ -1158,12 +1190,12 @@ h2.title {
 	width: 30px;
 }
 
-.synonyms-box button i{
+.add-syn-ant button i{
 	color: #FFFFFF;
 }
 
-.synonyms-box  button:hover, 
-.synonyms-box  button:focus{
+.add-syn-ant  button:hover, 
+.add-syn-ant  button:focus{
 	background-color:#EAE3E4;
 }
 

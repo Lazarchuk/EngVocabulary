@@ -8,11 +8,13 @@
 		document.getElementById(id).style.color = '#FFFFFF';
 	}
 	function btnSubmitFocus(id){
+		this.
 		document.getElementById(id).style.color = '#E90350';
 	}
 	function btnSubmitBlur(id){
 		document.getElementById(id).style.color = '#FFFFFF';
 	}
+
 	
 	/* Show/hide forms for edit word. Controller - WordController - eng/word*/
 	function showForm(id) {
@@ -37,7 +39,6 @@
 			document.getElementById('submitBtn').style.display = 'none'
 		}
 	}
-	
 	
 	/* Add synonym */
 	function addNewSynonym(){
@@ -65,15 +66,14 @@
 		});
 	}
 	
-	
-	/* Add antonym */
-	function addNewAntonym(){
+		/* Add synonym - dropdown*/
+	function addSynonym(newSynonym){
 		$.ajax({
 			type: "POST",
-			url: "/word/new/antonym",
+			url: "/word/new/synonym",
 			data: {
 				wordEng: targetWord,
-				antonym: document.getElementById("add_ant").value
+				synonym: newSynonym
 			},
 			success: function(result){
 				if (result.length == 0){
@@ -92,14 +92,28 @@
 		});
 	}
 	
-	/* Add synonym - dropdown*/
-	function addSynonym(newSynonym){
+		/*Delete synonym*/
+	function deleteSynonym(delSynonym){
 		$.ajax({
 			type: "POST",
-			url: "/word/new/synonym",
+			url: "/word/delete/synonym",
+			data:{
+				wordEng: targetWord,
+				synonym: delSynonym
+			}
+		});
+		document.getElementById('li'+delSynonym).remove();
+	}
+
+	
+	/* Add antonym */
+	function addNewAntonym(){
+		$.ajax({
+			type: "POST",
+			url: "/word/new/antonym",
 			data: {
 				wordEng: targetWord,
-				synonym: newSynonym
+				antonym: document.getElementById("add_ant").value
 			},
 			success: function(result){
 				if (result.length == 0){
@@ -145,24 +159,7 @@
 		});
 	}
 	
-	/* Delete synonym */
-	function deleteSynonym(delSynonym){
-		$.ajax({
-			type: "POST",
-			url: "/word/delete/synonym",
-			data:{
-				wordEng: targetWord,
-				synonym: delSynonym
-			},
-			success: function(result){
-				if (result == true){
-					location.reload();
-				}
-			}
-		});
-	}
-	
-	/* Delete antonym */
+		/*Delete synonym*/
 	function deleteAntonym(delAntonym){
 		$.ajax({
 			type: "POST",
@@ -170,14 +167,12 @@
 			data:{
 				wordEng: targetWord,
 				antonym: delAntonym
-			},
-			success: function(result){
-				if (result == true){
-					location.reload();
-				}
 			}
 		});
+		document.getElementById('li'+delAntonym).remove();
 	}
+	
+	
 	
 	/* Add new category */
 	function addCategory(){
@@ -185,7 +180,6 @@
 			type: "POST",
 			url: "/word/new/category",
 			data:{
-				wordEng: targetWord,
 				category: document.getElementById("new_category").value
 			},
 			success: function(result){
@@ -211,7 +205,7 @@
 			setTimeout(function(){
 				$.ajax({
 					type: "POST",
-					url: "/search/result",
+					url: "/search/synonyms",
 					data: {search: searchText},
 					success: function(result){
 						if (result.length == 0){
@@ -226,10 +220,10 @@
 							var ul = document.getElementById('dropdown_list_syn');
 							ul.innerHTML = '';
 							for (var i = 0; i < result.length; i++){
-								var wordEng = result[i].wordEng;
+								var synName = result[i].name;
 								var li = document.createElement("li");
-								li.setAttribute('onclick', 'addSynonym("'+wordEng+'")');
-								li.innerHTML = wordEng;
+								li.setAttribute('onclick', 'addSynonym("'+synName+'")');
+								li.innerHTML = synName;
 								ul.appendChild(li);
 							}
 						}
@@ -246,7 +240,7 @@
 			setTimeout(function(){
 				$.ajax({
 					type: "POST",
-					url: "/search/result",
+					url: "/search/antonyms",
 					data: {search: searchText},
 					success: function(result){
 						if (result.length == 0){
@@ -261,10 +255,10 @@
 							var ul = document.getElementById('dropdown_list_ant');
 							ul.innerHTML = '';
 							for (var i = 0; i < result.length; i++){
-								var wordEng = result[i].wordEng;
+								var antName = result[i].name;
 								var li = document.createElement("li");
-								li.setAttribute('onclick', 'addAntonym("'+wordEng+'")');
-								li.innerHTML = wordEng;
+								li.setAttribute('onclick', 'addAntonym("'+antName+'")');
+								li.innerHTML = antName;
 								ul.appendChild(li);
 							}
 						}
@@ -274,6 +268,8 @@
 			1000);
 		}
 	}
+	
+	
 	
 	window.onclick = function(event) {
 		document.getElementById("dropdown_syn").style.display = 'none';

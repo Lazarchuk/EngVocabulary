@@ -12,6 +12,7 @@
 	<title>Insert word</title>
 	<link href="/resources/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/resources/css/main.css" rel="stylesheet">
+	<link href="/resources/css/font-awesome.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -35,6 +36,13 @@
 							</div>
 						</div>
 					</c:if>	
+					
+					<div class="col-sm-12 word-row" style="display: none" id="errors_box"> 
+						<div class="word-wrapper">
+							<ul class="error" id="errors_list">
+							</ul>
+						</div>
+					</div>
 					
 					<form:form method="POST" modelAttribute="insertWord">
 						<div class="col-sm-12 word-row"> 
@@ -74,10 +82,17 @@
 									<label class="add-word-info">Category</label>
 								</div>
 								<div class="edit-form">
-									<form:select path="category">
+									<form:select path="categoryId">
 										<form:option value="" label="--Select category--"/>
-										<form:options items="${categoryMap}"/>
+										<form:options items="${categoryMap}" itemValue="id" itemLabel="name"/>
 									</form:select>
+									
+								<div id="add_category">
+									<input type="text" value="" placeholder="Add category" onfocus="this.value=''" id="new_category"/>
+									<button type="button" class="btn btn-default" onclick="addCategory()" onfocus="btnSubmitFocus('i_plus1')" onmouseout="btnSubmitBlur('i_plus1')" onmouseover="btnSubmitFocus('i_plus1')" onblur="btnSubmitBlur('i_plus1')">
+										<i class="fa fa-plus" id="i_plus1"></i>
+									</button>
+								</div>
 								</div>
 							</div>
 						</div>
@@ -116,7 +131,7 @@
 	</div>
 </section>
 
-
+<script src="/resources/js/myfunctions/newWordFunc.js"></script>
 </body>
 </html>
 <script>

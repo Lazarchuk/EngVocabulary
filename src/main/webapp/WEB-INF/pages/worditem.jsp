@@ -18,7 +18,7 @@
 <body>
 <%@include file="header.jsp" %>
 	
-	<section>
+<section>
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
@@ -56,8 +56,8 @@
 									</div>
 								</div>
 								<div class="edit-form">
-									<form:input path="wordEng" placeholder="New word" pattern="^[a-zA-Z\s]+$" maxlength="40" id="form1" cssStyle="display: none"/>
-									<form:hidden path="id"/>
+									<form:input path="wordEng" placeholder="New word" pattern="^[a-zA-Z\s]+$" maxlength="60" required="true" id="form1" cssStyle="display: none"/>
+									<form:hidden path="id" value="${editWord.id}"/>
 								</div>
 							</div>
 							
@@ -97,7 +97,7 @@
 							
 							<div class="col-sm-6">
 								<div class="word-wrapper">
-									<label class="add-word-info">Category:  <span>${editWord.category}</span></label>
+									<label class="add-word-info">Category:  <span>${editWord.category.name}</span></label>
 									<div class="edit-button">
 										<button type="button" class="btn btn-default" onclick="showForm('form4')" onfocus="btnAddFocus('i_edit4')" onmouseout="btnAddBlur('i_edit4')" onmouseover="btnAddFocus('i_edit4')" onblur="btnAddBlur('i_edit4')">
 											<i class="fa fa-edit" id="i_edit4"></i>
@@ -105,9 +105,10 @@
 									</div>
 								</div>
 								<div class="edit-form" id="form4" style="display: none">
-									<form:select path="category">
-										<form:option value="" label="--Select category--"/>
-										<form:options items="${categoryMap}"/>
+									<form:select path="categoryId">
+										<form:option value="${editWord.category.id}" label="${editWord.category.name}"/>
+										<form:options items="${categoryMap}" itemValue="id" itemLabel="name"/>
+										<form:option value="" label="NONE"/>
 									</form:select>
 								<div id="add_category">
 									<input type="text" value="" placeholder="Add category" onfocus="this.value=''" id="new_category"/>
@@ -156,8 +157,8 @@
 								<button type="submit" class="btn btn-default">Save</button>
 							</div>
 						</div>
-					</form:form>			
-					
+					</form:form>	
+
 					<div class="col-sm-12 word-row">				
 						<div class="col-sm-6">
 							<div class="word-wrapper">
@@ -168,30 +169,31 @@
 										</ul>
 									</div>
 								</div>
-								<div class="synonyms-box">
-									<c:if test="${editWord.synonyms ne null}">										
+								<div class="synonyms-box">																										
+									<c:if test="${editWord.synonyms ne null}">			
 										<ul>
 											<c:forEach var="synonym" items="${editWord.synonyms}">
-												<li><a href="/word/${synonym}">${synonym}</a>
+												<li id="li${synonym.name}"><a href="#">${synonym.name}</a>
 													<div class="delete-syn-ant">
-														<button type="button" class="btn btn-default" onclick="deleteSynonym('${synonym}')" onfocus="btnSubmitFocus('${synonym}')" onmouseout="btnSubmitBlur('${synonym}')" onmouseover="btnSubmitFocus('${synonym}')" onblur="btnSubmitBlur('${synonym}')">
-															<i class="fa fa-minus" id="${synonym}"></i>
+														<button type="button" class="btn btn-default" onclick="deleteSynonym('${synonym.name}')" onfocus="btnSubmitFocus('${synonym.name}')" onmouseout="btnSubmitBlur('${synonym.name}')" onmouseover="btnSubmitFocus('${synonym.name}')" onblur="btnSubmitBlur('${synonym.name}')">
+															<i class="fa fa-minus" id="${synonym.name}"></i>
 														</button>
 													</div>
 												</li>
 											</c:forEach>
 										</ul>
 									</c:if>
-									<div id="form7">
+									
+									<div class="add-syn-ant" id="form7">
 										<input type="text" value="" placeholder="Add synonym" onfocus="this.value=''" oninput="searchSyn(this.value)" id="add_syn"/>
 										<button type="button" class="btn btn-default" id="add_syn_btn" onclick="addNewSynonym()" onfocus="btnSubmitFocus('i_plus2')" onmouseout="btnSubmitBlur('i_plus2')" onmouseover="btnSubmitFocus('i_plus2')" onblur="btnSubmitBlur('i_plus2')">
 											<i class="fa fa-plus" id="i_plus2"></i>
 										</button>
 									</div>
 								</div>
-							</div>							
-						</div>						
-						
+							</div>
+						</div>
+
 						<div class="col-sm-6">
 							<div class="word-wrapper">
 								<label class="add-word-info">Antonyms:</label>
@@ -201,30 +203,31 @@
 										</ul>
 									</div>
 								</div>
-								<div class="synonyms-box">
-									<c:if test="${editWord.antonyms ne null}">										
+								<div class="synonyms-box">						
+									<c:if test="${editWord.antonyms ne null}">			
 										<ul>
 											<c:forEach var="antonym" items="${editWord.antonyms}">
-												<li><a href="/word/${antonym}">${antonym}</a>
+												<li id="li${antonym.name}"><a href="#">${antonym.name}</a>
 													<div class="delete-syn-ant">
-														<button type="button" class="btn btn-default" onclick="deleteAntonym('${antonym}')" onfocus="btnSubmitFocus('${antonym}')" onmouseout="btnSubmitBlur('${antonym}')" onmouseover="btnSubmitFocus('${antonym}')" onblur="btnSubmitBlur('${antonym}')">
-															<i class="fa fa-minus" id="${antonym}"></i>
+														<button type="button" class="btn btn-default" onclick="deleteAntonym('${antonym.name}')" onfocus="btnSubmitFocus('${antonym.name}')" onmouseout="btnSubmitBlur('${antonym.name}')" onmouseover="btnSubmitFocus('${antonym.name}')" onblur="btnSubmitBlur('${antonym.name}')">
+															<i class="fa fa-minus" id="${antonym.name}"></i>
 														</button>
 													</div>
 												</li>
 											</c:forEach>
 										</ul>
 									</c:if>
-									<div id="form8">
+									
+									<div class="add-syn-ant" id="form8">
 										<input type="text" value="" placeholder="Add antonym" onfocus="this.value=''" oninput="searchAnt(this.value)" id="add_ant"/>
 										<button type="button" class="btn btn-default" id="add_ant_btn" onclick="addNewAntonym()" onfocus="btnSubmitFocus('i_plus3')" onmouseout="btnSubmitBlur('i_plus3')" onmouseover="btnSubmitFocus('i_plus3')" onblur="btnSubmitBlur('i_plus3')">
 											<i class="fa fa-plus" id="i_plus3"></i>
 										</button>
 									</div>
 								</div>
-							</div>
-						</div>							
-					</div>
+							</div>							
+						</div>						
+					</div>				
 				</div>
 			</div>
 			

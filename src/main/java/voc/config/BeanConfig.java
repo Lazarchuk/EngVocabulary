@@ -1,26 +1,31 @@
 package voc.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import voc.dao.DataAbstractFactory;
+import voc.dao.Dao;
+import voc.daoimpl.WordDao;
+import voc.service.VocabularyService;
+import voc.serviceimpl.VocabularyServiceImpl;
+
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("voc.controller")
-@PropertySource("classpath:datasource.properties")
+@ComponentScan("voc")
+@PropertySource("classpath:/datasource.properties")
 public class BeanConfig implements WebMvcConfigurer {
 
     @Autowired
-    Environment env;
+    private Environment env;
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
@@ -34,18 +39,40 @@ public class BeanConfig implements WebMvcConfigurer {
                 .setCachePeriod(20);        //SECONDS
     }
 
+    @Bean()
+    @Primary
+    public VocabularyService vocabularyService(){
+        return new VocabularyServiceImpl();
+    }
+
+    @Bean
+    public EntityManagerFactory entityManagerFactory(){
+        return Persistence.createEntityManagerFactory("vocabulary_persistence");
+    }
+
+    @Bean
+    public Dao dao(){
+        return new WordDao();
+    }
+
     @Bean
     public DriverManagerDataSource driverManagerDataSource(){
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName(env.getProperty("driverClassName"));
-        dataSource.setUrl(env.getProperty("sourceUrl"));
         dataSource.setUsername(env.getProperty("dbUsername"));
         dataSource.setPassword(env.getProperty("password"));
+        dataSource.setUrl(env.getProperty("url"));
         return dataSource;
     }
 
     @Bean
-    public DataAbstractFactory dataAbstractFactory(){
-        return DataAbstractFactory.getFactory(driverManagerDataSource());
+    public Connection connection(){
+        try {
+            return driverManagerDataSource().getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
 }
